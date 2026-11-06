@@ -55,9 +55,11 @@ def insert_coins():
     global inserted_coins
     # Read the coin value from the incoming JSON request body.
     data = request.get_json()
+    if not isinstance(data, dict):
+        return jsonify({"Error": "Request body must be a JSON object"}), 400
     coin = data.get("coin")
     # The machine accepts only one quarter per request.
-    if coin == 1:
+    if type(coin) is int and coin == 1:
         inserted_coins += 1
     else:
         return jsonify({"Error": "Sorry input is invalid"}), 400
